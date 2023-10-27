@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import ttk
+import students.py
 
 class GradeBookGUI:
     """Interactive grade book GUI to create assignments/grades, and run reports. """
