@@ -67,7 +67,7 @@ def insert_student(db, first, last):
         cur = conn.cursor()  # cursor object
         student = (first, last)
         cur.execute(sql, student)
-        return cur.lastrowid # returns the row id of the cursor object
+        return cur.lastrowid  # returns the row id of the cursor object
 
 
 def insert_assignment(db, student_id, assignment_name, possible, actual):
@@ -78,7 +78,7 @@ def insert_assignment(db, student_id, assignment_name, possible, actual):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id, assignment_name, possible, actual))
-        return cur.lastrowid # returns the row id of the cursor object
+        return cur.lastrowid  # returns the row id of the cursor object
 
 
 def select_student(db, student_id):
@@ -88,7 +88,7 @@ def select_student(db, student_id):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id,))
-        return cur.fetchall() # returns the row id of the cursor object
+        return cur.fetchall()  # returns the row id of the cursor object
 
 
 def select_assignment(db, assignment_id):
@@ -98,7 +98,7 @@ def select_assignment(db, assignment_id):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (assignment_id,))
-        return cur.fetchall() # returns the row id of the cursor object
+        return cur.fetchall()  # returns the row id of the cursor object
 
 
 def select_all_assignments(db):
@@ -108,7 +108,7 @@ def select_all_assignments(db):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql)
-        return cur.fetchall() # returns all assignments
+        return cur.fetchall()  # returns all assignments
 
 
 def select_all_students(db):
@@ -118,4 +118,4 @@ def select_all_students(db):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql)
-        return cur.fetchall() # returns all assignments
+        return cur.fetchall()  # returns all assignments
