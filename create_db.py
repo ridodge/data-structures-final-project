@@ -158,3 +158,11 @@ def select_all_students(db):
         cur.execute(sql)
         return cur.fetchall()  # returns all students
 
+def exists_student(db, student_id):
+    """Tests if student exists, returns None if false, returns row if true"""
+    conn = create_connection(db)
+    sql = ''' SELECT * FROM students WHERE student_id = ?;'''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        cur.execute(sql, (student_id,))
+        return cur.fetchone()  # returns the row id of the cursor object
