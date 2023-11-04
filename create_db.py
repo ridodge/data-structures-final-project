@@ -158,12 +158,3 @@ def select_all_students(db):
         cur.execute(sql)
         return cur.fetchall()  # returns all students
 
-
-create_student_table("test.db")
-create_assignment_table("test.db")
-create_assignment_name_table("test.db")
-
-# insert_student("test.db", 123, "First", "Last")
-# insert_assignment_name("test.db", 1234, "Assignment")
-# insert_assignment("test.db", 123, 1234, 100, 100)
-update_assignment("test.db", 123, 1234, 50)
