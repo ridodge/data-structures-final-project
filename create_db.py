@@ -78,7 +78,7 @@ def insert_student(db, student_id, first, last):
     """Create a new student for table"""
     conn = create_connection(db)
     sql = ''' INSERT INTO students(student_id, first_name,last_name)
-              VALUES(?,?,?) '''
+              VALUES(?,?,?); '''
     with conn:
         cur = conn.cursor()  # cursor object
         student = (student_id, first, last)
@@ -90,7 +90,7 @@ def insert_assignment_name(db, assignment_id, name):
     """Create a new student for table"""
     conn = create_connection(db)
     sql = ''' INSERT INTO assignment_name(assignment_id, assignment_name)
-              VALUES(?,?) '''
+              VALUES(?,?); '''
     with conn:
         cur = conn.cursor()  # cursor object
         assignment = (assignment_id, name)
@@ -102,17 +102,27 @@ def insert_assignment(db, student_id, assignment_id, possible, actual):
     """Create a new assignment for table assignments"""
     conn = create_connection(db)
     sql = ''' INSERT INTO assignments(student_id, assignment_id, possible, actual)
-              VALUES(?,?,?,?) '''
+              VALUES(?,?,?,?); '''
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id, assignment_id, possible, actual))
         return cur.lastrowid  # returns the row id of the cursor object
 
 
+def update_assignment(db, student_id, assignment_id, actual):
+    """Update assignment for specific student"""
+    conn = create_connection(db)
+    sql = ''' UPDATE assignments SET actual = ? WHERE student_id = ? AND assignment_id = ?; '''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        cur.execute(sql, (actual, student_id, assignment_id))
+        return cur.lastrowid  # returns the row id of the cursor object
+
+
 def select_student(db, student_id):
     """Select all students from assignments table by student_id"""
     conn = create_connection(db)
-    sql = ''' SELECT * FROM students WHERE student_id = ?'''
+    sql = ''' SELECT * FROM students WHERE student_id = ?;'''
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id,))
@@ -147,3 +157,13 @@ def select_all_students(db):
         cur = conn.cursor()  # cursor object
         cur.execute(sql)
         return cur.fetchall()  # returns all students
+
+
+create_student_table("test.db")
+create_assignment_table("test.db")
+create_assignment_name_table("test.db")
+
+# insert_student("test.db", 123, "First", "Last")
+# insert_assignment_name("test.db", 1234, "Assignment")
+# insert_assignment("test.db", 123, 1234, 100, 100)
+update_assignment("test.db", 123, 1234, 50)
