@@ -41,12 +41,27 @@ def create_student_table(database):
 def create_assignment_table(database):
     """Create assignment table"""
     sql_create_student_table = """CREATE TABLE IF NOT EXISTS assignments (
-                                    assignment_id integer,
+                                    assignment_id integer NOT NULL,
                                     student_id integer NOT NULL,
-                                    assignment_name text NOT NULL,
                                     possible integer NOT NULL,
                                     actual integer NOT NULL,
-                                    FOREIGN KEY (student_id) REFERENCES students (id)
+                                    FOREIGN KEY (student_id) REFERENCES students (student_id),
+                                    FOREIGN KEY (assignment_id) REFERENCES assignment_name (assignment_id)
+                                );"""
+
+    # create a database connection
+    conn = create_connection(database)
+    if conn is not None:
+        # create student table
+        create_table(conn, sql_create_student_table)
+    else:
+        print("Unable to connect to " + str(database))
+
+def create_assignment_name_table(database):
+    """Create assignment name table"""
+    sql_create_student_table = """CREATE TABLE IF NOT EXISTS assignment_name (
+                                    assignment_id integer PRIMARY KEY,
+                                    assignment_name text NOT NULL
                                 );"""
 
     # create a database connection
@@ -58,33 +73,44 @@ def create_assignment_table(database):
         print("Unable to connect to " + str(database))
 
 
-def insert_student(db, first, last):
+def insert_student(db,student_id, first, last):
     """Create a new student for table"""
     conn = create_connection(db)
-    sql = ''' INSERT INTO students(first_name,last_name)
-              VALUES(?,?) '''
+    sql = ''' INSERT INTO students(student_id, first_name,last_name)
+              VALUES(?,?,?) '''
     with conn:
         cur = conn.cursor()  # cursor object
-        student = (first, last)
+        student = (student_id, first, last)
         cur.execute(sql, student)
         return cur.lastrowid  # returns the row id of the cursor object
 
+def insert_assignment_name(db,assignment_id, name):
+    """Create a new student for table"""
+    conn = create_connection(db)
+    sql = ''' INSERT INTO assignment_name(assignment_id, assignment_name)
+              VALUES(?,?) '''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        assignment = (assignment_id, name)
+        cur.execute(sql, assignment)
+        return cur.lastrowid  # returns the row id of the cursor object
 
-def insert_assignment(db, student_id, assignment_name, possible, actual):
+
+def insert_assignment(db, student_id, assignment_id, possible, actual):
     """Create a new assignment for table assignments"""
     conn = create_connection(db)
-    sql = ''' INSERT INTO assignments(student_id, assignment_name, possible, actual)
+    sql = ''' INSERT INTO assignments(student_id, assignment_id, possible, actual)
               VALUES(?,?,?,?) '''
     with conn:
         cur = conn.cursor()  # cursor object
-        cur.execute(sql, (student_id, assignment_name, possible, actual))
+        cur.execute(sql, (student_id, assignment_id, possible, actual))
         return cur.lastrowid  # returns the row id of the cursor object
 
 
 def select_student(db, student_id):
     """Select all students from assignments table by student_id"""
     conn = create_connection(db)
-    sql = ''' SELECT * FROM students WHERE id = ?'''
+    sql = ''' SELECT * FROM students WHERE student_id = ?'''
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id,))
@@ -119,3 +145,4 @@ def select_all_students(db):
         cur = conn.cursor()  # cursor object
         cur.execute(sql)
         return cur.fetchall()  # returns all assignments
+
