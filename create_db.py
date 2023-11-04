@@ -166,3 +166,12 @@ def exists_student(db, student_id):
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (student_id,))
         return cur.fetchone()  # returns the row id of the cursor object
+
+def exists_assignment(db, assignment_id):
+    """Tests if assignment exists, returns None if false, returns row if true"""
+    conn = create_connection(db)
+    sql = ''' SELECT * FROM assignment_name WHERE assignemnt_id = ?;'''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        cur.execute(sql, (assignment_id,))
+        return cur.fetchone()  # returns the row id of the cursor object
