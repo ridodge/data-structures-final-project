@@ -52,10 +52,11 @@ def create_assignment_table(database):
     # create a database connection
     conn = create_connection(database)
     if conn is not None:
-        # create student table
+        # create assignment table
         create_table(conn, sql_create_student_table)
     else:
         print("Unable to connect to " + str(database))
+
 
 def create_assignment_name_table(database):
     """Create assignment name table"""
@@ -67,13 +68,13 @@ def create_assignment_name_table(database):
     # create a database connection
     conn = create_connection(database)
     if conn is not None:
-        # create student table
+        # create assignment name table
         create_table(conn, sql_create_student_table)
     else:
         print("Unable to connect to " + str(database))
 
 
-def insert_student(db,student_id, first, last):
+def insert_student(db, student_id, first, last):
     """Create a new student for table"""
     conn = create_connection(db)
     sql = ''' INSERT INTO students(student_id, first_name,last_name)
@@ -84,7 +85,8 @@ def insert_student(db,student_id, first, last):
         cur.execute(sql, student)
         return cur.lastrowid  # returns the row id of the cursor object
 
-def insert_assignment_name(db,assignment_id, name):
+
+def insert_assignment_name(db, assignment_id, name):
     """Create a new student for table"""
     conn = create_connection(db)
     sql = ''' INSERT INTO assignment_name(assignment_id, assignment_name)
@@ -144,5 +146,4 @@ def select_all_students(db):
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql)
-        return cur.fetchall()  # returns all assignments
-
+        return cur.fetchall()  # returns all students
