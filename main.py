@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import ttk
-import students.py
+import students
+
 
 class GradeBookGUI:
     """Interactive grade book GUI to create assignments/grades, and run reports. """
@@ -42,7 +43,6 @@ class GradeBookGUI:
         new_assignment_canvas.create_window(290, 100, window=assignment_entry)
         new_assignment_canvas.create_window(340, 150, window=continue_button)
         new_assignment_canvas.create_window(240, 150, window=exit_button)
-
 
 
 if __name__ == "__main__":
