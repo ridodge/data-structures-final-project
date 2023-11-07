@@ -170,7 +170,7 @@ def exists_student(db, student_id):
 def exists_assignment(db, assignment_id):
     """Tests if assignment exists, returns None if false, returns row if true"""
     conn = create_connection(db)
-    sql = ''' SELECT * FROM assignment_name WHERE assignemnt_id = ?;'''
+    sql = ''' SELECT * FROM assignment_name WHERE assignment_id = ?;'''
     with conn:
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (assignment_id,))

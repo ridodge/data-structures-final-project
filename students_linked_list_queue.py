@@ -17,7 +17,7 @@ class StudentsLinkedQueue:
             # node starts as first in list
             node = self.first
             # while the nodes next value is not None
-            while not node.next:
+            while node.next is not None:
                 # set new node
                 node = node.next
             # when node.next is None, set node.next to student

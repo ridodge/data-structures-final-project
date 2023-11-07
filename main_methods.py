@@ -44,6 +44,7 @@ def create_new_assignment_name(database, assignment_name):
         assignment_id = r(minimum_id, maximum_id)
     # insert assignment into database with name and assignment_id
     insert_assignment_name(database, assignment_id, assignment_name)
+    return assignment_id
 
 
 def test_if_students_exist(database):
