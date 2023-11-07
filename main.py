@@ -17,8 +17,12 @@ class GradeBookGUI:
         self.root.mainloop()
 
     def set_fist_canvas(self):
+        """Test if database has students"""
+        # if no students
         if len(select_all_students(self.database)) == 0:
+            # Start creating students
             self.create_students()
+        # else main menu
         else:
             self.main_menu()
 
@@ -35,7 +39,7 @@ class GradeBookGUI:
         main_canvas.create_window(290, 50, window=welcome)
         main_canvas.create_window(290, 100, window=create_assignment_button)
         # Run GUI
-        return self.root.mainloop()
+        self.root.mainloop()
 
     def create_assignment(self):
         """Create assignment menu of grade book"""
@@ -61,13 +65,16 @@ class GradeBookGUI:
 
         def create(name):
             try:
+                # Test input
                 test_entry(name)
                 points = int(points_entry.get())
+            # Catch exceptions and create error screen
             except (EntryException, ValueError):
                 error_information = tkinter.Label(text="Invalid Entry. Please check your input.", background='slate gray')
                 error_button = ttk.Button(new_assignment_canvas, text="OK", command=lambda: (error_information.destroy(), error_button.destroy()))
                 new_assignment_canvas.create_window(290, 300, window=error_information)
                 new_assignment_canvas.create_window(290, 400, window=error_button)
+            # Else create assignment and add to database, destroy screen, send to grading screen
             else:
                 assignment_num = create_new_assignment_name(self.database, name)
                 new_assignment_canvas.destroy()
@@ -100,31 +107,37 @@ class GradeBookGUI:
 
         def attempt(first, last):
             try:
+                # Test input
                 test_entry(first)
                 test_entry(last)
+            # catch for errors, create error screen if invalid entry
             except EntryException:
                 error_information = tkinter.Label(text="Invalid Entry. Please check your input.", background='slate gray')
                 error_button = ttk.Button(new_student_canvas, text="OK", command=lambda: (error_information.destroy(), error_button.destroy()))
                 new_student_canvas.create_window(290, 300, window=error_information)
                 new_student_canvas.create_window(290, 400, window=error_button)
             else:
+                # Add student to database, reset screen
                 create_new_student(self.database, first, last)
                 new_student_canvas.destroy()
                 self.create_students()
 
     def grading(self, assignment_num, points):
         """Grading screen for GUI"""
+        # Get name and ID values, dequeue from list
         first = self.students.get_next_student().first
         last = self.students.get_next_student().last
         student_id = self.students.get_next_student().id
         self.students.dequeue()
 
+        # Generate Canvas with labels, buttons, and input
         grading_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
         grading_canvas.pack(pady=10)
         information = tkinter.Label(text=f"Student: {first} {last} ID: {student_id}", background='slate gray')
         points_label = tkinter.Label(text=f"Points Possible: {points}", background='slate gray')
         points_entry = ttk.Entry(grading_canvas)
-        next_button = ttk.Button(grading_canvas, text="Save - Next Student", command=lambda: (next()))
+        next_button = ttk.Button(grading_canvas, text="Save - Next Student", command=lambda: (next_screen()))
+        # If there is no next student in list, change button to main menu button
         if self.students.is_empty():
             next_button.config(text="Save - Main Menu")
         grading_canvas.create_window(290, 50, window=information)
@@ -132,14 +145,17 @@ class GradeBookGUI:
         grading_canvas.create_window(290, 150, window=points_entry)
         grading_canvas.create_window(290, 200, window=next_button)
 
-        def next():
+        def next_screen():
+            # Catch errors
             try:
                 set_points = int(points_entry.get())
+            #  Catch errors, create error screen if invalid input
             except ValueError:
-                    error_information = tkinter.Label(text="Invalid Entry. Please check your input.", background='slate gray')
-                    error_button = ttk.Button(grading_canvas, text="OK", command=lambda: (error_information.destroy(), error_button.destroy()))
-                    grading_canvas.create_window(290, 300, window=error_information)
-                    grading_canvas.create_window(290, 400, window=error_button)
+                error_information = tkinter.Label(text="Invalid Entry. Please check your input.", background='slate gray')
+                error_button = ttk.Button(grading_canvas, text="OK", command=lambda: (error_information.destroy(), error_button.destroy()))
+                grading_canvas.create_window(290, 300, window=error_information)
+                grading_canvas.create_window(290, 400, window=error_button)
+            # If valid, insert into database, reset canvas if next student, destroy and go to main menu if no next student
             else:
                 insert_assignment(self.database, student_id, assignment_num, points, set_points)
                 grading_canvas.destroy()
@@ -147,9 +163,6 @@ class GradeBookGUI:
                     self.grading(assignment_num, points)
                 else:
                     self.main_menu()
-
-
-
 
 
 if __name__ == "__main__":
