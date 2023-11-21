@@ -67,7 +67,7 @@ class GradeBookGUI:
         def create(name):
             try:
                 # Test input
-                test_entry(name)
+                check_entry(name)
                 points = int(points_entry.get())
             # Catch exceptions and create error screen
             except (EntryException, ValueError):
@@ -109,8 +109,8 @@ class GradeBookGUI:
         def attempt(first, last):
             try:
                 # Test input
-                test_entry(first)
-                test_entry(last)
+                check_entry(first)
+                check_entry(last)
             # catch for errors, create error screen if invalid entry
             except EntryException:
                 error_information = tkinter.Label(text="Invalid Entry. Please check your input.", background='slate gray')

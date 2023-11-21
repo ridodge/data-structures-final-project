@@ -72,7 +72,7 @@ def generate_student_linked_list(database):
     return students_list
 
 
-def test_entry(entry):
+def check_entry(entry):
     """Check for valid characters in entry"""
     acceptable = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-")
     if not (acceptable.issuperset(entry)) or len(entry) == 0:
