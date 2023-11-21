@@ -80,6 +80,7 @@ def test_entry(entry):
 
 
 def assign_average_grades_from_linked_list(db, queue):
+    """Assign average grades for students"""
     node = queue.get_next_student()
     assignments = select_all_assignments_by_id(db)
     grades = []
@@ -90,16 +91,18 @@ def assign_average_grades_from_linked_list(db, queue):
 
     while i < len(assignments):
         assignment_id = assignments[i][0]
-        print(assignments)
-        print(node.id, assignment_id)
         grades.append(select_assignment_by_student(db, assignment_id, node.id)[0])
-        print(grades)
         i += 1
 
-        for grade in grades:
-            total += (grade[actual]/grade[possible])
-            average = total / len(grades)
+        if i == len(assignments):
+            for grade in grades:
+                total += (grade[actual]/grade[possible])
+                average = total / len(grades)
             node.overall_grade = average
+            print(average)
+            if node.next_student is not None:
+                node = node.next_student
+                i = 0
 
 
 
