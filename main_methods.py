@@ -77,3 +77,30 @@ def test_entry(entry):
     acceptable = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-")
     if not (acceptable.issuperset(entry)) or len(entry) == 0:
         raise EntryException
+
+
+def assign_average_grades_from_linked_list(db, queue):
+    node = queue.get_next_student()
+    assignments = select_all_assignments_by_id(db)
+    grades = []
+    possible = 0
+    actual = 1
+    i = 0
+    total = 0
+
+    while i < len(assignments):
+        assignment_id = assignments[i][0]
+        print(assignments)
+        print(node.id, assignment_id)
+        grades.append(select_assignment_by_student(db, assignment_id, node.id)[0])
+        print(grades)
+        i += 1
+
+        for grade in grades:
+            total += (grade[actual]/grade[possible])
+            average = total / len(grades)
+            node.overall_grade = average
+
+
+
+

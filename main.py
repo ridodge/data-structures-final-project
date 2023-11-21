@@ -29,6 +29,7 @@ class GradeBookGUI:
     def main_menu(self):
         """Main menu of grade book"""
         self.students = generate_student_linked_list(self.database)
+        assign_average_grades_from_linked_list("gradebook.db", self.students)
         # Define canvas for main manu
         main_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
         main_canvas.pack(pady=10)

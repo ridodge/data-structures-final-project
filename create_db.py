@@ -148,6 +148,14 @@ def select_all_assignments(db):
         cur.execute(sql)
         return cur.fetchall()  # returns all assignments
 
+def select_all_assignments_by_id(db):
+    """Select all students from assignments table"""
+    conn = create_connection(db)
+    sql = '''SELECT assignment_id FROM assignment_name'''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        cur.execute(sql)
+        return cur.fetchall()  # returns all assignments
 
 def select_all_students(db):
     """Select all assignments from students table"""
@@ -175,3 +183,12 @@ def exists_assignment(db, assignment_id):
         cur = conn.cursor()  # cursor object
         cur.execute(sql, (assignment_id,))
         return cur.fetchone()  # returns the row id of the cursor object
+
+def select_assignment_by_student(db, assignment_id, student_id):
+    """Select all assignments from assignments table by assignment_id and student_id"""
+    conn = create_connection(db)
+    sql = ''' SELECT possible, actual FROM assignments WHERE assignment_id = ? AND student_id = ?;'''
+    with conn:
+        cur = conn.cursor()  # cursor object
+        cur.execute(sql, (assignment_id, student_id))
+        return cur.fetchall()  # returns the row id of the cursor object
