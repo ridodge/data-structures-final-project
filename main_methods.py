@@ -90,7 +90,8 @@ def assign_average_grades_from_linked_list(db, queue):
     possible = 0
     actual = 1
     i = 0
-    total = 0
+    actual_points = 0
+    attempted_points = 0
     # for each assignment, get the grade, and calculate average
     while i < len(assignments):
         assignment_id = assignments[i][0]
@@ -99,12 +100,16 @@ def assign_average_grades_from_linked_list(db, queue):
 
         if i == len(assignments):
             for grade in grades:
-                total += (grade[actual]/grade[possible])
+                actual_points += grade[actual]
+                attempted_points += grade[possible]
                 # assign average as percentage rounded to next whole number
-                average = round((total / len(grades))*100)
+            average = round((actual_points/attempted_points) * 100)
             node.overall_grade = average
+
             if node.next_student is not None:
                 node = node.next_student
+                actual_points = 0
+                attempted_points = 0
                 i = 0
 
 
@@ -129,8 +134,9 @@ def assign_priorities(database, nodes):
         node = node.next
         if node is None:
             not_end = False
+            return p
 
-        return p
+
 
 
 

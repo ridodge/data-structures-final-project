@@ -174,6 +174,8 @@ class GradeBookGUI:
         sorting_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
         sorting_canvas.pack(pady=10)
         text_screen = tkinter.Text(width=50, height =20)
+        exit_button = ttk.Button(sorting_canvas, text="Exit", command=lambda: (sorting_canvas.destroy(), self.main_menu()))
+        sorting_canvas.create_window(290, 40, window=exit_button)
         sorting_canvas.create_window(290, 240, window=text_screen)
 
         students = self.sort_students()
@@ -186,8 +188,9 @@ class GradeBookGUI:
         priority_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
         priority_canvas.pack(pady=10)
         text_screen = tkinter.Text(width=50, height =20)
+        exit_button = ttk.Button(priority_canvas, text="Exit", command=lambda: (priority_canvas.destroy(), self.main_menu()))
+        priority_canvas.create_window(290, 40, window=exit_button)
         priority_canvas.create_window(290, 240, window=text_screen)
-        print(self.students)
         students = assign_priorities(self.database, self.students).return_high()
         for student in students:
             # Display each students grade to screen
