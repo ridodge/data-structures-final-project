@@ -20,3 +20,5 @@ def selection_sort(array):
                 min_student = student
         # swapping the elements to sort the array
         (array[index], array[min_student]) = (array[min_student], array[index])
+    return array
+

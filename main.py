@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import ttk
 from main_methods import *
+from sorting import *
 
 
 class GradeBookGUI:
@@ -36,8 +37,10 @@ class GradeBookGUI:
         welcome = tkinter.Label(text="Welcome to your grade book!", background='slate gray')
         # Button to go to generate main assignment canvas and destroy main canvas
         create_assignment_button = ttk.Button(main_canvas, text="Create Assignment", command=lambda: (main_canvas.destroy(), self.create_assignment()))
+        sorting_button = ttk.Button(main_canvas, text="Sort Students", command=lambda: (main_canvas.destroy(), self.sorting()))
         main_canvas.create_window(290, 50, window=welcome)
         main_canvas.create_window(290, 100, window=create_assignment_button)
+        main_canvas.create_window(290, 150, window=sorting_button)
         # Run GUI
         self.root.mainloop()
 
@@ -164,6 +167,26 @@ class GradeBookGUI:
                 else:
                     self.main_menu()
 
+    def sorting(self):
+        """Screen that displays students in a sorted order from the lowest grade to highest"""
+        sorting_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
+        sorting_canvas.pack(pady=10)
+        text_screen = tkinter.Text(width=50, height =20)
+        sorting_canvas.create_window(290, 240, window=text_screen)
+
+        students = self.sort_students()
+        for student in students:
+            # Display each students grade to screen
+            text_screen.insert(tkinter.END, f"{student.overall_grade}% {student.first} {student.last}\n")
+
+    def sort_students(self):
+        # assign average scores
+        assign_average_grades_from_linked_list(self.database, self.students)
+        # convert linked list to array
+        students_list = convert_linked_to_array(self.students.get_next_student())
+        # sort array and return
+        return selection_sort(students_list)
 
 if __name__ == "__main__":
     main = GradeBookGUI()
+
