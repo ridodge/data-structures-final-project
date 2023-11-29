@@ -38,9 +38,11 @@ class GradeBookGUI:
         # Button to go to generate main assignment canvas and destroy main canvas
         create_assignment_button = ttk.Button(main_canvas, text="Create Assignment", command=lambda: (main_canvas.destroy(), self.create_assignment()))
         sorting_button = ttk.Button(main_canvas, text="Sort Students", command=lambda: (main_canvas.destroy(), self.sorting()))
+        priority_button = ttk.Button(main_canvas, text="High Priorty", command=lambda: (main_canvas.destroy(), self.priority()))
         main_canvas.create_window(290, 50, window=welcome)
         main_canvas.create_window(290, 100, window=create_assignment_button)
         main_canvas.create_window(290, 150, window=sorting_button)
+        main_canvas.create_window(290, 200, window=priority_button)
         # Run GUI
         self.root.mainloop()
 
@@ -175,6 +177,18 @@ class GradeBookGUI:
         sorting_canvas.create_window(290, 240, window=text_screen)
 
         students = self.sort_students()
+        for student in students:
+            # Display each students grade to screen
+            text_screen.insert(tkinter.END, f"{student.overall_grade}% {student.first} {student.last}\n")
+
+    def priority(self):
+        """Screen that displays students of high priority grade wise"""
+        priority_canvas = tkinter.Canvas(self.root, width=580, height=480, background='slate gray')
+        priority_canvas.pack(pady=10)
+        text_screen = tkinter.Text(width=50, height =20)
+        priority_canvas.create_window(290, 240, window=text_screen)
+        print(self.students)
+        students = assign_priorities(self.database, self.students).return_high()
         for student in students:
             # Display each students grade to screen
             text_screen.insert(tkinter.END, f"{student.overall_grade}% {student.first} {student.last}\n")

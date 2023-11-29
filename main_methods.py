@@ -2,6 +2,7 @@ from students import Student
 from students_linked_list_queue import StudentsLinkedQueue as Sq
 from create_db import *
 from random import randint as r
+from priority_list_students import PriorityList
 
 
 class EntryException(Exception):
@@ -81,7 +82,7 @@ def check_entry(entry):
 
 def assign_average_grades_from_linked_list(db, queue):
     """Assign average grades for students"""
-    # get nect student
+    # get next student
     node = queue.get_next_student()
     # get the assignments for that student
     assignments = select_all_assignments_by_id(db)
@@ -105,6 +106,33 @@ def assign_average_grades_from_linked_list(db, queue):
             if node.next_student is not None:
                 node = node.next_student
                 i = 0
+
+
+def assign_priorities(database, nodes):
+    p = PriorityList()
+    HIGH = 3
+    MEDIUM = 2
+    LOW = 1
+    node = nodes.get_next_student()
+    assign_average_grades_from_linked_list(database, nodes)
+
+    not_end = True
+    while not_end:
+
+        if node.overall_grade >= 85:
+            p.insert(node, LOW)
+        elif node.overall_grade >= 75:
+            p.insert(node, MEDIUM)
+        else:
+            p.insert(node, HIGH)
+
+        node = node.next
+        if node is None:
+            not_end = False
+
+        return p
+
+
 
 
 
