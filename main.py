@@ -6,12 +6,12 @@ from sorting import *
 
 class GradeBookGUI:
     """Interactive grade book GUI to create assignments/grades, and run reports. """
-    def __init__(self):
+    def __init__(self, database):
         # Define root and design, construct root with main_menu frame
         self.root = tkinter.Tk()
         self.root.geometry("600x500")
         self.root.configure(bg="black")
-        self.database = "gradebook.db"
+        self.database = database
         create_database(self.database)
 
         self.set_fist_canvas()
@@ -205,5 +205,5 @@ class GradeBookGUI:
         return selection_sort(students_list)
 
 if __name__ == "__main__":
-    main = GradeBookGUI()
+    main = GradeBookGUI("gradebook.db")
 
